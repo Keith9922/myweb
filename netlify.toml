@@ -1,0 +1,28 @@
+# =================================================================
+# Netlify 部署配置
+# 主要作用：把 /admin 路径在生产环境彻底封掉
+# =================================================================
+
+[build]
+  publish = "."
+  command = ""
+
+# 把生产环境的 /admin 全部 404 掉
+# 本地开发不受影响（本地是 npm run admin 直接走 http-server）
+[[redirects]]
+  from = "/admin"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/admin/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# 给 admin 加 noindex 头（双重保险，万一 redirect 配置丢了也不会被搜索引擎收录）
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive"

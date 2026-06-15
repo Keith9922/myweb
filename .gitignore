@@ -1,4 +1,15 @@
 .DS_Store
 .claude/
+.vscode/
+.idea/
+
+# 依赖
 node_modules/
+
+# 日志
 *.log
+npm-debug.log*
+
+# 临时
+.tmp/
+*.swp

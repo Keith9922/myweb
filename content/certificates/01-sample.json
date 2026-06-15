@@ -1,0 +1,8 @@
+{
+  "title": "示例证书",
+  "issuer": "示例机构",
+  "date": "2024-06-01T00:00:00.000Z",
+  "thumbnail": "",
+  "image": "",
+  "description": "这是一张示例。在 admin 里替换成你真实的证书。"
+}

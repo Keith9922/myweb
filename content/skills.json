@@ -1,0 +1,13 @@
+{
+  "items": [
+    { "name": "JavaScript", "category": "前端", "level": 5, "years": 5, "related_projects": [] },
+    { "name": "TypeScript", "category": "前端", "level": 4, "years": 3, "related_projects": [] },
+    { "name": "React", "category": "前端", "level": 5, "years": 4, "related_projects": [] },
+    { "name": "CSS", "category": "前端", "level": 4, "years": 5, "related_projects": [] },
+    { "name": "Node.js", "category": "后端", "level": 4, "years": 4, "related_projects": [] },
+    { "name": "Python", "category": "后端", "level": 3, "years": 3, "related_projects": [] },
+    { "name": "Figma", "category": "设计", "level": 3, "years": 2, "related_projects": [] },
+    { "name": "Git", "category": "工具", "level": 4, "years": 5, "related_projects": [] },
+    { "name": "Vim", "category": "工具", "level": 3, "years": 4, "related_projects": [] }
+  ]
+}

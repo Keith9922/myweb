@@ -1,0 +1,9 @@
+{
+  "_comment": "前端通过这个清单来知道有哪些项目文件。新建项目后请更新这里（admin 不会自动维护）。",
+  "slugs": [
+    "01-independent-dev",
+    "02-writing",
+    "03-music",
+    "04-citywalk"
+  ]
+}

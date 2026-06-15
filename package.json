@@ -1,0 +1,17 @@
+{
+  "name": "my-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "张容纲 · 个人空间",
+  "scripts": {
+    "admin": "concurrently --names \"PROXY,WEB\" --prefix-colors \"cyan,magenta\" \"npx decap-server\" \"npx http-server -p 8000 -c-1 -o /admin/\"",
+    "serve": "npx http-server -p 8000 -c-1 -o / --proxy http://localhost:8000?",
+    "preview": "npx http-server -p 8000 -c-1 -o / --proxy http://localhost:8000?"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "decap-server": "^3.1.6",
+    "http-server": "^14.1.1",
+    "marked": "^12.0.2"
+  }
+}

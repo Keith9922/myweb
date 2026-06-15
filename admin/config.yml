@@ -1,0 +1,196 @@
+# ==========================================================
+# Decap CMS · 本地专用配置（local mode，无登录）
+# 启动方式：在项目根目录运行 `npm run admin`
+# 访问地址：http://localhost:8000/admin/
+# ==========================================================
+
+# 关键开关：启用本地模式 → admin UI 跳过 OAuth 登录
+local_backend: true
+
+backend:
+  name: git-gateway   # local mode 下仅作占位符
+  branch: main
+
+# 媒体上传位置（图片自动落到这里）
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+# 中文界面
+locale: "zh_Hans"
+
+# 显示链接到主站
+display_url: "/"
+site_url: "/"
+
+# ==========================================================
+# 内容集合：5 种内容类型
+# ==========================================================
+collections:
+  # ----------------- 站点全局配置 -----------------
+  - name: "site"
+    label: "站点全局"
+    description: "网站基础信息、联系方式、BGM"
+    files:
+      - file: "content/site.json"
+        format: "json"
+        label: "站点配置"
+        name: "site"
+        fields:
+          - { label: "网站标题（浏览器标签页）", name: "title", widget: "string" }
+          - { label: "版权说明（页脚）", name: "copyright", widget: "string" }
+          - { label: "网易云 BGM ID", name: "music_id", widget: "string", hint: "在网易云歌曲 URL 里 ?id= 后面那串数字" }
+          - { label: "副歌出现的时间偏移（ms）", name: "music_chorus_offset_ms", widget: "number", default: 58000, hint: "从用户点击进入开始算，副歌出现在多少毫秒。需要按实际曲目实测填" }
+          - label: "联系方式"
+            name: "contact"
+            widget: "object"
+            fields:
+              - { label: "邮箱", name: "email", widget: "string", required: false }
+              - { label: "GitHub", name: "github", widget: "string", required: false }
+              - { label: "博客 / 推特", name: "blog", widget: "string", required: false }
+              - { label: "简历下载链接（PDF）", name: "resume", widget: "string", required: false }
+
+  # ----------------- 关于我 -----------------
+  - name: "about"
+    label: "关于我"
+    description: "首页 Hero 署名 + 关于子页所有内容"
+    files:
+      - file: "content/about.json"
+        format: "json"
+        label: "关于"
+        name: "about"
+        fields:
+          - { label: "名字", name: "name", widget: "string" }
+          - { label: "一句话身份（首页 Hero 署名用）", name: "tagline", widget: "string", hint: "如：独立开发者 · 文字与代码的爱好者" }
+          - { label: "自我标识词（关于页头像下方）", name: "self_description", widget: "string", hint: "如：一个仍在追风的人" }
+          - { label: "引言（独立大段引用）", name: "quote", widget: "text" }
+          - { label: "自我介绍（关于页正文，支持 markdown）", name: "intro_md", widget: "markdown" }
+          - label: "标签"
+            name: "tags"
+            widget: "list"
+            field: { label: "标签", name: "tag", widget: "string" }
+          - label: "时间线（飞行轨迹）"
+            name: "timeline"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "年份", name: "year", widget: "string" }
+              - { label: "标题", name: "title", widget: "string" }
+              - { label: "描述", name: "description", widget: "text", required: false }
+          - label: "我喜欢的"
+            name: "interests"
+            widget: "list"
+            required: false
+            fields:
+              - label: "类别"
+                name: "category"
+                widget: "select"
+                options: ["书", "音乐", "城市", "格言", "电影", "其他"]
+              - { label: "内容", name: "value", widget: "string" }
+
+  # ----------------- 项目（每条一个文件） -----------------
+  - name: "projects"
+    label: "项目"
+    description: "作品集中的项目，每个项目一个文件"
+    folder: "content/projects"
+    create: true
+    slug: "{{slug}}"
+    extension: "json"
+    format: "json"
+    summary: "{{title}} · {{year date}}"
+    sortable_fields: ["date", "title"]
+    fields:
+      - { label: "标题", name: "title", widget: "string" }
+      - { label: "日期", name: "date", widget: "datetime" }
+      - { label: "封面图", name: "cover", widget: "image", required: false }
+      - { label: "一句话简介", name: "summary", widget: "text" }
+      - label: "技术栈"
+        name: "stack"
+        widget: "list"
+        field: { label: "技术", name: "tech", widget: "string" }
+      - label: "外链"
+        name: "links"
+        widget: "list"
+        required: false
+        fields:
+          - { label: "标签", name: "label", widget: "string", hint: "如：GitHub / 在线体验 / 文章" }
+          - { label: "URL", name: "url", widget: "string" }
+      - { label: "详情（项目详情页正文，支持 markdown）", name: "body_md", widget: "markdown", required: false }
+      - { label: "首页精选", name: "featured", widget: "boolean", default: false, hint: "勾选后显示在首页 Works 引子区" }
+
+  # ----------------- 证书 -----------------
+  - name: "certificates"
+    label: "证书 / 奖项"
+    description: "时间线 + 卡片展示"
+    folder: "content/certificates"
+    create: true
+    slug: "{{slug}}"
+    extension: "json"
+    format: "json"
+    summary: "{{title}} · {{year date}}"
+    sortable_fields: ["date", "title"]
+    fields:
+      - { label: "证书名", name: "title", widget: "string" }
+      - { label: "颁发机构", name: "issuer", widget: "string" }
+      - { label: "日期", name: "date", widget: "datetime" }
+      - { label: "缩略图", name: "thumbnail", widget: "image", required: false }
+      - { label: "原图（lightbox 大图）", name: "image", widget: "image", required: false }
+      - { label: "一句话说明", name: "description", widget: "text", required: false }
+
+  # ----------------- 博客（飞书文档）-----------------
+  - name: "blog"
+    label: "博客文章"
+    description: "每篇博客填一组元数据 + 飞书分享链接"
+    folder: "content/blog"
+    create: true
+    slug: "{{slug}}"
+    extension: "json"
+    format: "json"
+    summary: "{{title}} · {{year date}}"
+    sortable_fields: ["date", "title"]
+    fields:
+      - { label: "标题", name: "title", widget: "string" }
+      - { label: "日期", name: "date", widget: "datetime" }
+      - { label: "封面图", name: "cover", widget: "image", required: false }
+      - { label: "一句话摘要（列表用）", name: "summary", widget: "text" }
+      - label: "标签"
+        name: "tags"
+        widget: "list"
+        required: false
+        field: { label: "标签", name: "tag", widget: "string" }
+      - { label: "飞书文档分享链接", name: "feishu_url", widget: "string", hint: '飞书文档右上角 分享 → 复制链接' }
+      - label: "嵌入模式"
+        name: "embed_mode"
+        widget: "select"
+        options:
+          - { label: "inline · 页面内嵌（如果飞书允许）", value: "inline" }
+          - { label: "external · 跳转新窗口", value: "external" }
+        default: "inline"
+        hint: "inline 模式失败时会自动 fallback 到 external"
+      - { label: "首页精选", name: "featured", widget: "boolean", default: false }
+
+  # ----------------- 技能 -----------------
+  - name: "skills"
+    label: "技能"
+    description: "Skills 子页的星图 / 羽毛云"
+    files:
+      - file: "content/skills.json"
+        format: "json"
+        label: "技能集合"
+        name: "skills"
+        fields:
+          - label: "技能列表"
+            name: "items"
+            widget: "list"
+            fields:
+              - { label: "名称", name: "name", widget: "string" }
+              - label: "类别"
+                name: "category"
+                widget: "select"
+                options: ["前端", "后端", "设计", "工具", "其他"]
+              - { label: "熟练度（1-5）", name: "level", widget: "number", min: 1, max: 5, default: 3 }
+              - { label: "年限", name: "years", widget: "number", min: 0, default: 1 }
+              - label: "代表项目（项目 slug，多个）"
+                name: "related_projects"
+                widget: "list"
+                required: false
+                field: { label: "slug", name: "slug", widget: "string", hint: "项目文件名（不带扩展名），如 01-portfolio" }

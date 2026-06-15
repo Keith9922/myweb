@@ -1,0 +1,5 @@
+# Netlify SPA fallback：所有未命中的真实文件都回到 index.html
+# 这样 /works /about /blog 这种深层路由直接访问也能 work
+/admin           /404.html   404!
+/admin/*         /404.html   404!
+/*               /index.html 200
