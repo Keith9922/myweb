@@ -10,12 +10,12 @@ const SPREAD_Y = 30;
 const SPREAD_Z = 20;
 
 export function initParticles() {
-  // 检查 Three.js 是否可用
+  // 装饰性粒子：任何环节（尤其 WebGL 不可用）失败都安静降级，绝不能抛错拖垮整站
   if (typeof THREE === 'undefined') {
     console.warn('Three.js not loaded, skipping particles');
     return;
   }
-
+  try {
   // 创建场景
   scene = new THREE.Scene();
 
@@ -97,6 +97,10 @@ export function initParticles() {
 
   // 开始动画
   animate();
+  } catch (err) {
+    console.warn('粒子背景初始化失败，已降级（不影响主站）：', err);
+    destroyParticles();
+  }
 }
 
 function animate() {

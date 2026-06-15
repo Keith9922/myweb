@@ -8,27 +8,32 @@
 
 ```
 my_web/
-├── index.html          # 主站入口（首页 = 当前唯一页面，子页待扩展）
-├── styles.css          # 全局样式
-├── script.js           # 主交互 + 动效 + 内容渲染
-├── admin/              # 本地内容管理后台（Decap CMS local mode）
+├── index.html          # SPA 外壳（天空/云/羽毛背景 + 导航 + 音乐 + 路由容器）
+├── styles.css          # 全局样式 + 设计 token（字号阶梯 / 对比 / 间距）
+├── js/                 # ES 模块（无构建步骤，CDN 引 GSAP/Three/Lenis）
+│   ├── main.js         # 入口：初始化 + 注册路由 + 全局动效（各 init 独立 try/catch）
+│   ├── router.js       # SPA 伪路由（pushState + 站内切换 + 云朵过场）
+│   ├── content.js      # 一次性 fetch 所有 content/*.json 到内存
+│   ├── animations.js   # 羽毛 / 滚动天空渐变 / 视差 / 风吹文字
+│   ├── particles.js    # Three.js 萤火粒子（WebGL 不可用时自动降级，不报错）
+│   ├── music.js        # 网易云 BGM + 入口门 + 副歌触发
+│   ├── utils.js        # 公共工具（转义 / markdown / reveal）
+│   └── views/          # 每个路由一个视图
+│       ├── home.js  about.js  works.js  skills.js
+│       └── certificates.js  blog.js  contact.js
+├── admin/              # 本地内容后台（Decap CMS local mode，生产环境被 netlify 屏蔽）
 │   ├── index.html
-│   └── config.yml      # 内容模型定义
+│   └── config.yml      # 6 个 collection 的内容模型
 ├── content/            # 所有内容数据（admin 增删改这里）
-│   ├── site.json       # 站点全局配置
-│   ├── about.json      # 关于我
-│   ├── skills.json     # 技能列表
-│   ├── projects/
-│   │   ├── _index.json # 项目清单（手动维护 slug 数组）
-│   │   └── *.json      # 每个项目一个文件
-│   └── certificates/
-│       ├── _index.json
-│       └── *.json
-├── images/uploads/     # admin 上传图片落到这
+│   ├── site.json   about.json   skills.json
+│   ├── projects/      { _index.json（slug 清单） + *.json }
+│   ├── certificates/  { _index.json + *.json }
+│   └── blog/          { _index.json + *.json }
+├── images/             # 配图（hero / portrait / 项目封面 / blog 封面 等）
+├── vendor/marked.min.js
 ├── docs/               # 设计方案 + 线框图
+├── 404.html  _redirects  netlify.toml  robots.txt
 ├── package.json
-├── netlify.toml        # 部署配置（屏蔽 /admin）
-├── robots.txt
 └── README.md
 ```
 
@@ -98,7 +103,7 @@ npm run serve
 
 ## 自检清单（每次大改后跑一遍）
 
-- [ ] `npm run admin` → admin UI 正常打开，能看到 5 个 collection
+- [ ] `npm run admin` → admin UI 正常打开，能看到 6 个 collection（site / about / projects / certificates / blog / skills）
 - [ ] admin 里改任意字段保存 → 对应 JSON 文件被更新
 - [ ] `npm run serve` 主站打开 → 内容来自 content/，不是硬编码
 - [ ] Hero 显示当前的名字 + tagline

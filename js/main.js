@@ -16,32 +16,34 @@ import { view as contactView } from './views/contact.js';
 import { view as blogView, detailView as blogDetail } from './views/blog.js';
 
 async function main() {
-  // 初始化 Lenis 平滑滚动
-  const lenis = new Lenis({
-    autoRaf: true,
-    smoothWheel: true,
-    lerp: 0.08,
-    duration: 1.4,
-    wheelMultiplier: 0.9,
-  });
-
-  // 同步 Lenis 到 GSAP ScrollTrigger
-  if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-    gsap.registerPlugin(ScrollTrigger);
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
+  // 初始化 Lenis 平滑滚动（CDN 依赖，缺失则降级为原生滚动）
+  let lenis = null;
+  try {
+    lenis = new Lenis({
+      autoRaf: true,
+      smoothWheel: true,
+      lerp: 0.08,
+      duration: 1.4,
+      wheelMultiplier: 0.9,
     });
-    gsap.ticker.lagSmoothing(0);
+    // 同步 Lenis 到 GSAP ScrollTrigger
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+      gsap.ticker.lagSmoothing(0);
+    }
+  } catch (e) {
+    console.warn('Lenis 初始化失败，降级为原生滚动：', e);
   }
 
-  // 全局视觉
-  spawnFeathers();
-  setupScrollBehavior();
-  setupParallax();
+  // 全局视觉与装饰：每一项都独立 try/catch，任一失败都不能拖垮路由/内容
+  try { spawnFeathers(); } catch (e) { console.warn('feathers init failed', e); }
+  try { setupScrollBehavior(); } catch (e) { console.warn('scroll init failed', e); }
+  try { setupParallax(); } catch (e) { console.warn('parallax init failed', e); }
 
-  // 初始化 Three.js 粒子背景
-  initParticles();
+  // 初始化 Three.js 粒子背景（WebGL 不可用时内部已降级，这里再兜一层）
+  try { initParticles(); } catch (e) { console.warn('particles init failed', e); }
 
   // 拉数据
   try { await loadAllContent(); } catch (e) { console.warn('content load failed', e); }

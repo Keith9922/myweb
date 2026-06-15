@@ -15,7 +15,7 @@ export const view = {
         </div>
 
         <div class="works-waterfall">
-          ${projects.map(renderCard).join('') || '<p class="muted center">作品集尚未起飞，去 admin 添加 ✦</p>'}
+          ${projects.map(renderCard).join('') || '<div class="empty-state reveal"><span class="empty-mark">𓆩</span><p>作品集尚未起飞，去 admin 添加 ✦</p></div>'}
         </div>
       </section>
     `;
@@ -51,7 +51,7 @@ export const detailView = {
           <div class="card-tags">${tags}</div>
         </div>
 
-        ${p.cover ? `<div class="detail-cover reveal" style="background-image:url('${escapeAttr(p.cover)}')"></div>` : ''}
+        ${p.cover ? `<div class="detail-cover reveal"><img src="${escapeAttr(p.cover)}" alt="${escapeAttr(p.title || '')}" loading="lazy" /></div>` : ''}
 
         <div class="detail-summary reveal">
           <p>${escapeHTML(p.summary || '')}</p>
@@ -71,7 +71,7 @@ export const detailView = {
 
 function renderCard(p, i) {
   const cover = p.cover
-    ? `<div class="card-cover" style="background-image:url('${escapeAttr(p.cover)}')"></div>`
+    ? `<div class="card-cover"><img src="${escapeAttr(p.cover)}" alt="${escapeAttr(p.title || '')}" loading="lazy" /></div>`
     : `<div class="card-icon">${pickIcon(p.title)}</div>`;
   const tags = (p.stack || []).map((t) => `<span class="card-tag">${escapeHTML(t)}</span>`).join('');
   // 错落瀑布流通过随机变量打乱卡片大小

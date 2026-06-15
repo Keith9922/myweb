@@ -16,7 +16,7 @@ export const view = {
 
         <div class="cert-timeline">
           <div class="timeline-line"></div>
-          ${items.map((c, i) => renderCert(c, i)).join('') || '<p class="muted center">还没有添加证书 ✦</p>'}
+          ${items.map((c, i) => renderCert(c, i)).join('') || '<div class="empty-state reveal"><span class="empty-mark">𓆩</span><p>认真做过的事，会留下痕迹。<br/>去 admin 添加第一张证书 ✦</p></div>'}
         </div>
 
         <div class="lightbox" id="certLightbox" hidden>

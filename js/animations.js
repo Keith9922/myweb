@@ -7,6 +7,8 @@ export function spawnFeathers() {
   const featherChars = ['𓆩', '✦', '◌', '𓆪', '·', '✧'];
   const container = $('#feathers');
   if (!container) return;
+  // GSAP 是 CDN 依赖：没加载到就跳过羽毛动效，不能让它抛错拖垮整站
+  if (typeof gsap === 'undefined') return;
   const COUNT = 18;
   for (let i = 0; i < COUNT; i++) {
     const f = document.createElement('span');

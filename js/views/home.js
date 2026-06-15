@@ -128,7 +128,7 @@ export const view = {
 function renderWorkCard(p, i) {
   const tags = (p.stack || []).map((t) => `<span class="card-tag">${escapeHTML(t)}</span>`).join('');
   const cover = p.cover
-    ? `<div class="card-cover" style="background-image:url('${escapeAttr(p.cover)}')"></div>`
+    ? `<div class="card-cover"><img src="${escapeAttr(p.cover)}" alt="${escapeAttr(p.title || '')}" loading="lazy" /></div>`
     : `<div class="card-icon">${pickIcon(p.title)}</div>`;
   return `
     <article class="work-card reveal" style="--delay:${i * 0.1}s">
@@ -142,7 +142,7 @@ function renderWorkCard(p, i) {
 }
 
 function renderWorksEmpty() {
-  return '<p class="muted center">作品集尚未起飞，去 admin 加几个吧 ✦</p>';
+  return '<div class="empty-state"><span class="empty-mark">𓆩</span><p>作品集尚未起飞，去 admin 加几个吧 ✦</p></div>';
 }
 
 function renderBlogTeaser(b) {

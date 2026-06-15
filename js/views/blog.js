@@ -15,7 +15,7 @@ export const view = {
         </div>
 
         <div class="blog-grid">
-          ${items.map(renderCard).join('') || '<p class="muted center">这片云上还没有字。等等再来 ✎</p>'}
+          ${items.map(renderCard).join('') || '<div class="empty-state reveal"><span class="empty-mark">𓆩</span><p>这片云上还没有字。<br/>等等再来 ✎</p></div>'}
         </div>
       </section>
     `;
@@ -66,7 +66,7 @@ export const detailView = {
           </div>
         ` : `
           <div class="external-card reveal">
-            ${b.cover ? `<div class="external-cover" style="background-image:url('${escapeAttr(b.cover)}')"></div>` : ''}
+            ${b.cover ? `<div class="external-cover"><img src="${escapeAttr(b.cover)}" alt="${escapeAttr(b.title || '')}" loading="lazy" /></div>` : ''}
             <p class="external-hint">这篇文章在飞书里。</p>
             <a class="link-btn primary big" href="${escapeAttr(url)}" target="_blank" rel="noopener">
               <span>在 飞 书 中 阅 读</span>
@@ -121,7 +121,7 @@ export const detailView = {
 function renderCard(b, i) {
   return `
     <a class="blog-card reveal" href="/blog/${escapeAttr(b.slug)}" data-route style="--delay:${(i % 6) * 0.08}s">
-      ${b.cover ? `<div class="card-cover" style="background-image:url('${escapeAttr(b.cover)}')"></div>` : ''}
+      ${b.cover ? `<div class="card-cover"><img src="${escapeAttr(b.cover)}" alt="${escapeAttr(b.title || '')}" loading="lazy" /></div>` : ''}
       <p class="card-date">${formatDate(b.date)}</p>
       <h3>${escapeHTML(b.title || '')}</h3>
       <p class="card-summary">${escapeHTML(b.summary || '')}</p>
